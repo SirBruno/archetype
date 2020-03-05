@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
+const Book = require('./models/book.model');
 
 // MongoDB #################################################################
 const uri = process.env.URI;
@@ -18,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/add', (req, res) => {
-    const newBook = new Book({ title: 'le book III', author: 'some dude' });
+    const newBook = new Book({ title: `${req.query.title}`, author: `${req.query.author}` });
     newBook.save().then(() => res.json('Book added!')).catch(err => res.status(400).json('Error: ' + err));
 });
 
