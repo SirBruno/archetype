@@ -5,6 +5,7 @@ function App() {
     <div className="App">
       <div>
         <p>working</p>
+        {/* gotta link to the backend here */}
       </div>
     </div>
   );
