@@ -3,6 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Book = require('./models/book.model');
+const cors = require('cors');
+
+app.use(cors());
 
 // MongoDB #################################################################
 const uri = process.env.URI;
@@ -19,8 +22,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/add', (req, res) => {
-    const newBook = new Book({ title: `${req.query.title}`, author: `${req.query.author}` });
-    newBook.save().then(() => res.json('Book added!')).catch(err => res.status(400).json('Error: ' + err));
+    const newBook = new Book({
+        title: `${req.query.title}`,
+        author: `${req.query.author}`
+    });
+    newBook.save().then(() => res.json('Book added!')).catch(err => {
+        res.status(400).json('Error: ' + err.errmsg);
+    });
 });
 
 // GraphQL *****************************************************************
