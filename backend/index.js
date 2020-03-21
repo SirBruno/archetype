@@ -18,7 +18,7 @@ connection.once('open', () => {
 });
 
 app.get('/', (req, res) => {
-    res.send("working");
+    res.send('working');
 });
 
 app.get('/add', (req, res) => {
@@ -46,11 +46,16 @@ const typeDefs = gql`
   }
 `;
 
-const books = require('./controllers/book.ctrl');
-
 const resolvers = {
     Query: {
-        books: () => books,
+        books: () => Book.find().then(books => (
+            books.map(book => {
+                return {
+                    title: book.title,
+                    author: book.author
+                }
+            })
+        )),
     },
 };
 
