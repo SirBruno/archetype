@@ -37,6 +37,7 @@ const { ApolloServer, gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Book {
+    id: String
     title: String
     author: String
   }
@@ -51,6 +52,7 @@ const resolvers = {
         books: () => Book.find().then(books => (
             books.map(book => {
                 return {
+                    id: book.id,
                     title: book.title,
                     author: book.author
                 }

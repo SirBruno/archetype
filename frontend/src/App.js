@@ -8,7 +8,7 @@ class App extends Component {
     super();
     this.state = {
       res: '',
-      books: ['0', '2']
+      books: []
     }
   }
 
@@ -38,12 +38,16 @@ class App extends Component {
       query: gql`
           {
               books {
+                  id
                   title
                   author
               }
           }
       `
-    }).then(result => this.setState({books: result.data.books}));
+    }).then(result => {
+      this.setState({books: result.data.books});
+      console.log(result.data);
+    });
   }
 
   render() {
