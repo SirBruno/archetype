@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ApolloClient, { gql } from 'apollo-boost';
+import Books from './Components/Books.jsx';
 
 class App extends Component {
 
@@ -29,27 +29,6 @@ class App extends Component {
     });
   }
 
-  componentDidMount() {
-    const client = new ApolloClient({
-      uri: 'http://localhost:4000'
-    });
-
-    client.query({
-      query: gql`
-          {
-              books {
-                  id
-                  title
-                  author
-              }
-          }
-      `
-    }).then(result => {
-      this.setState({books: result.data.books});
-      console.log(result.data);
-    });
-  }
-
   render() {
     return (
       <div className="App">
@@ -61,11 +40,7 @@ class App extends Component {
           <button onClick={() => this.sendData()}>Send</button>
           <br />
           <p id="req-response">request's response goes here...</p>
-        </div>
-        <div>
-          {
-            this.state.books.map(books => <p>{books.title}</p>)
-          }
+          <Books />
         </div>
       </div>
     )
