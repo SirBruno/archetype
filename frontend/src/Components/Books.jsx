@@ -3,7 +3,7 @@ import ApolloClient, { gql } from 'apollo-boost';
 
 export default function Books() {
 
-    const [books, setName] = useState([]);
+    const [books, setBooks] = useState([]);
 
     useEffect(() => {
         const client = new ApolloClient({
@@ -21,16 +21,14 @@ export default function Books() {
                 }
             `
         }).then(result => {
-            setName(result.data.books);
+            setBooks(result.data.books);
             console.log(result.data);
         });
     });
 
     return (
         <div>
-            {
-                books.map(books => <p>{books.title}</p>)
-            }
+            { books.map(books => <p>{books.title}</p>) }
         </div>
     )
 }
