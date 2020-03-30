@@ -7,8 +7,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      res: '',
-      books: []
+      res: ''
     }
   }
 
