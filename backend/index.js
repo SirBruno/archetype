@@ -67,6 +67,11 @@ server.listen().then(() => {
     console.log(`GraphQL Server running at http://localhost:4000`);
 });
 
-app.listen(5000, () => {
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 8000;
+}
+
+app.listen(port, () => {
     console.log("Express Server running at http://localhost:5000");
 });
