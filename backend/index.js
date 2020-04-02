@@ -18,7 +18,7 @@ connection.once('open', () => {
 });
 
 app.get('/', (req, res) => {
-    res.send('working');
+    res.send('Test lol');
 });
 
 app.get('/add', (req, res) => {
