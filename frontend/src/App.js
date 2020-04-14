@@ -12,10 +12,11 @@ class App extends Component {
   }
 
   sendData() {
-    axios.get('http://localhost:5000/add', {
+    axios.get('http://localhost:8000/add', {
       params: {
         title: document.getElementById("sendData-title").value,
-        author: document.getElementById("sendData-author").value
+        author: document.getElementById("sendData-author").value,
+        description: document.getElementById("sendData-description").value
       }
     }).then(res => {
       console.log("res:" + res);
@@ -35,6 +36,8 @@ class App extends Component {
           <input id="sendData-title" placeholder="Title" />
           <br />
           <input id="sendData-author" placeholder="Author" />
+          <br />
+          <input id="sendData-description" placeholder="Description" />
           <br />
           <button onClick={() => this.sendData()}>Send</button>
           <br />

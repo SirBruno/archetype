@@ -24,7 +24,8 @@ app.get('/', (req, res) => {
 app.get('/add', (req, res) => {
     const newBook = new Book({
         title: `${req.query.title}`,
-        author: `${req.query.author}`
+        author: `${req.query.author}`,
+        description: `${req.query.description}`
     });
     newBook.save().then(() => res.json('Book added!')).catch(err => {
         res.status(400).json('Error: ' + err.errmsg);
@@ -40,6 +41,7 @@ const typeDefs = gql`
     id: String
     title: String
     author: String
+    description: String
   }
 
   type Query {
@@ -54,7 +56,8 @@ const resolvers = {
                 return {
                     id: book.id,
                     title: book.title,
-                    author: book.author
+                    author: book.author,
+                    description: book.description
                 }
             })
         )),
@@ -73,5 +76,5 @@ if (port == null || port == "") {
 }
 
 app.listen(port, () => {
-    console.log("Express Server running at http://localhost:5000");
+    console.log("Express Server running at http://localhost:8000");
 });

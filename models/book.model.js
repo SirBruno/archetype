@@ -16,6 +16,13 @@ const bookSchema = new Schema({
         unique: false,
         trim: true,
         minlength: 3
+    },
+    description: {
+        type: String,
+        required: true,
+        unique: false,
+        trim: true,
+        minlength: 3
     }
 }, {
     timestamps: true,
