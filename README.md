@@ -1,2 +1,2 @@
 # archetype
-The idea is for this to be the basis for all my upcoming webdev projects.
+This is my biggest personal project.
