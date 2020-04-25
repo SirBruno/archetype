@@ -18,7 +18,7 @@ connection.once('open', () => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Test after the forced long ass command...');
+    res.send('anotha test...');
 });
 
 app.get('/add', (req, res) => {
