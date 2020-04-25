@@ -66,9 +66,13 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
-server.listen().then(() => {
-    console.log(`GraphQL Server running at http://localhost:4000`);
-});
+// server.listen().then(() => {
+//     console.log(`GraphQL Server running at http://localhost:4000`);
+// });
+
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`);
+  });
 
 let port = process.env.PORT;
 if (port == null || port == "") {
