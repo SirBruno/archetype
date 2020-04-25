@@ -18,7 +18,7 @@ connection.once('open', () => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Testing something...');
+    res.send('Test number 313254879...');
 });
 
 app.get('/add', (req, res) => {
