@@ -81,7 +81,7 @@ if (port == null || port == "") {
   port = 8000;
 }
 
-app.use('/graphql', graphqlHTTP({schema, graphiql: true}));
+app.use('/graphql', graphqlHTTP({graphiql: true}));
 
 app.use(express.static('public'));
 
