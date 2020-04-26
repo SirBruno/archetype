@@ -70,24 +70,19 @@ const server = new ApolloServer({ typeDefs, resolvers, playground: {
     }
   } });
 
-// server.listen({ port: 4000 }).then(({ url }) => {
-//     console.log(`🚀 Server ready at ${url}`);
-//   });
-
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
 }
 
-server.applyMiddleware({ app: app });
-// app.use('/graphx', graphqlHTTP({schema, graphiql: true}));
-// app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema }));
 
 app.use(express.static('public'));
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
+
+server.applyMiddleware({ app: app });
 
 app.listen(port, () => {
     console.log("Express Server running at http://localhost:8000");
