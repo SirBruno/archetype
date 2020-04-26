@@ -8,10 +8,8 @@ const path = require('path');
 const schema = require('./schema');
 const graphqlHTTP = require('express-graphql');
 const { ApolloServer, gql } = require('apollo-server-express');
-
 app.use(cors());
 
-// MongoDB #################################################################
 const uri = process.env.URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
 );
@@ -32,9 +30,7 @@ app.get('/add', (req, res) => {
     });
 });
 
-// GraphQL *****************************************************************
 // const { ApolloServer, gql } = require('apollo-server');
-
 
 const typeDefs = gql`
   type Book {
