@@ -1,5 +1,5 @@
 # archetype
-This is my biggest personal project.
+This is my biggest personal project. It's in a *very early* stage of development, i've a lot of work to do. My main goal here is to have fun and learn a few things here and there on the way.
 
 ***Features***
 - *GraphQL API w/ Apollo Server/Client*
