@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const Book = require('./models/book.model');
 const cors = require('cors');
+const path = require('path');
 
 app.use(cors());
 
@@ -78,6 +79,12 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
 }
+
+app.use(express.static('public'));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+});
 
 app.listen(port, () => {
     console.log("Express Server running at http://localhost:8000");
