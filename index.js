@@ -18,9 +18,9 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-app.get('/', (req, res) => {
-    res.send('hopefully last test of the night...');
-});
+// app.get('/', (req, res) => {
+//     res.send('hopefully last test of the night...');
+// });
 
 app.get('/add', (req, res) => {
     const newBook = new Book({
