@@ -9,7 +9,7 @@ export default function Books() {
     useEffect(() => {
 
         const client = new ApolloClient({
-            uri: 'http://localhost:4000'
+            uri: '/graphql'
         });
 
         client.query({

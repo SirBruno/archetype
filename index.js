@@ -5,6 +5,7 @@ require('dotenv').config();
 const Book = require('./models/book.model');
 const cors = require('cors');
 const path = require('path');
+const graphqlHTTP = require('express-graphql');
 
 app.use(cors());
 
@@ -79,6 +80,8 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
 }
+
+app.use('/graphql', graphqlHTTP({schema, graphiql: true}));
 
 app.use(express.static('public'));
 
