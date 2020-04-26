@@ -72,7 +72,7 @@ if (port == null || port == "") {
 }
 
 server.applyMiddleware({ app, path: '/graphql' });
-// app.use('/graphql', graphqlHTTP({schema, graphiql: true}));
+app.use('/graphql', graphqlHTTP({schema, graphiql: true}));
 
 app.use(express.static('public'));
 
