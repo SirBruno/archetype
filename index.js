@@ -7,8 +7,11 @@ const cors = require('cors');
 const path = require('path');
 const schema = require('./schema');
 const graphqlHTTP = require('express-graphql');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, graphqlExpress, gql } = require('apollo-server-express');
+const bodyParser = require('body-parser');
 app.use(cors());
+
+const myGraphQLSchema = schema;
 
 const uri = process.env.URI;
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
@@ -60,7 +63,12 @@ const resolvers = {
     },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, playground: {
+    endpoint: `http://localhost:4000/graphql`,
+    settings: {
+      'editor.theme': 'light'
+    }
+  } });
 
 // server.listen({ port: 4000 }).then(({ url }) => {
 //     console.log(`🚀 Server ready at ${url}`);
@@ -71,8 +79,9 @@ if (port == null || port == "") {
   port = 8000;
 }
 
-server.applyMiddleware({ app, path: '/graphql' });
-app.use('/graphql', graphqlHTTP({schema, graphiql: true}));
+server.applyMiddleware({ app: app });
+// app.use('/graphx', graphqlHTTP({schema, graphiql: true}));
+// app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema }));
 
 app.use(express.static('public'));
 
