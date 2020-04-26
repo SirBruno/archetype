@@ -7,3 +7,5 @@ This is my biggest personal project. It's in a *very early* stage of development
 - *UI built w/ React*
 
 *I might switch to Next.js in the future, i think it's gonna make a few things easier.*
+
+The project is currently being hosted on *Heroku*, and is accessible via [this link](https://archetypeofficial.herokuapp.com).
