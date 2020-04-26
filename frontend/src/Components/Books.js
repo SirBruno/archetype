@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ApolloClient, { gql } from 'apollo-boost';
+import EnvContext from '../Contexts/EnvContext';
 
 export default function Books() {
 
     const [books, setBooks] = useState([]);
     const lastId = books[books.length - 1]?.id;
+    const testContext = useContext(EnvContext);
 
     useEffect(() => {
 
+        console.log(testContext);
+
         const client = new ApolloClient({
-            uri: '/graphql'
+            uri: process.env.REACT_APP_URI || '/graphql'
         });
 
         client.query({

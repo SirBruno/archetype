@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Books from '../../Components/Books';
+import { EnvProvider } from '../../Contexts/EnvContext';
 
 class App extends Component {
-
   constructor() {
     super();
     this.state = {
@@ -42,7 +42,9 @@ class App extends Component {
           <button onClick={() => this.sendData()}>Send</button>
           <br />
           <p id="req-response">request's response goes here...</p>
-          <Books />
+          <EnvProvider value="testing the context">
+            <Books />
+          </EnvProvider>
         </div>
       </div>
     )
