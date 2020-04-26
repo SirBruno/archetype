@@ -5,7 +5,9 @@ require('dotenv').config();
 const Book = require('./models/book.model');
 const cors = require('cors');
 const path = require('path');
+const schema = require('./schema');
 const graphqlHTTP = require('express-graphql');
+const { ApolloServer, gql } = require('apollo-server-express');
 
 app.use(cors());
 
@@ -19,10 +21,6 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
-// app.get('/', (req, res) => {
-//     res.send('hopefully last test of the night...');
-// });
-
 app.get('/add', (req, res) => {
     const newBook = new Book({
         title: `${req.query.title}`,
@@ -35,7 +33,7 @@ app.get('/add', (req, res) => {
 });
 
 // GraphQL *****************************************************************
-const { ApolloServer, gql } = require('apollo-server');
+// const { ApolloServer, gql } = require('apollo-server');
 
 
 const typeDefs = gql`
@@ -68,20 +66,17 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
-// server.listen().then(() => {
-//     console.log(`GraphQL Server running at http://localhost:4000`);
-// });
-
-server.listen({ port: 4000 }).then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`);
-  });
+// server.listen({ port: 4000 }).then(({ url }) => {
+//     console.log(`🚀 Server ready at ${url}`);
+//   });
 
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
 }
 
-app.use('/graphql', graphqlHTTP({graphiql: true}));
+server.applyMiddleware({ app, path: '/graphql' });
+// app.use('/graphql', graphqlHTTP({schema, graphiql: true}));
 
 app.use(express.static('public'));
 
