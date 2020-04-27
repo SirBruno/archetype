@@ -63,7 +63,7 @@ const startServer = async () => {
         typeDefs, resolvers, playground: {
             endpoint: `http://localhost:4000/graphql`,
             settings: {
-                'editor.theme': 'light'
+                'editor.theme': 'dark'
             }
         }
     });
