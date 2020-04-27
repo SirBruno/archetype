@@ -4,13 +4,13 @@ require('dotenv').config();
 const Book = require('./models/book.model');
 const cors = require('cors');
 const path = require('path');
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, gql } = require('apollo-server');
 
 // ********************************************************************
 
 const startServer = async () => {
-    const app = express();
-    app.use(cors());
+    // const app = express();
+    // app.use(cors());
 
     const uri = process.env.URI;
     await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
@@ -20,16 +20,16 @@ const startServer = async () => {
         console.log("MongoDB database connection established successfully");
     });
 
-    app.get('/add', (req, res) => {
-        const newBook = new Book({
-            title: `${req.query.title}`,
-            author: `${req.query.author}`,
-            description: `${req.query.description}`
-        });
-        newBook.save().then(() => res.json('Book added!')).catch(err => {
-            res.status(400).json('Error: ' + err.errmsg);
-        });
-    });
+    // app.get('/add', (req, res) => {
+    //     const newBook = new Book({
+    //         title: `${req.query.title}`,
+    //         author: `${req.query.author}`,
+    //         description: `${req.query.description}`
+    //     });
+    //     newBook.save().then(() => res.json('Book added!')).catch(err => {
+    //         res.status(400).json('Error: ' + err.errmsg);
+    //     });
+    // });
 
     const typeDefs = gql`
       type Book {
@@ -68,26 +68,30 @@ const startServer = async () => {
         }
     });
 
-    server.applyMiddleware({ app });
+    // server.applyMiddleware({ app });
 
     let port = process.env.PORT;
     if (port == null || port == "") {
         port = 8000;
     }
 
-    app.use(express.static('public'));
+    // app.use(express.static('public'));
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-    });
+    // app.get('*', (req, res) => {
+    //     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+    // });
 
     // app.use('/graphql', graphqlHTTP({
     //     schema
     // }));
 
-    app.listen(port, () => {
-        console.log("Express Server running at http://localhost:8000");
-    });
+    // app.listen(port, () => {
+    //     console.log("Express Server running at http://localhost:8000");
+    // });
+
+    server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+        console.log(`🚀 Server ready at ${url}`);
+      });
 };
 
 startServer();
