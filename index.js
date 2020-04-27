@@ -63,12 +63,12 @@ const startServer = async () => {
         typeDefs, resolvers, playground: {
             endpoint: `http://localhost:4000/graphql`,
             settings: {
-                'editor.theme': 'dark'
+                'editor.theme': 'light'
             }
         }
     });
 
-    server.applyMiddleware({ app, path: '/graphql' });
+    server.applyMiddleware({ app });
 
     let port = process.env.PORT;
     if (port == null || port == "") {
@@ -85,11 +85,8 @@ const startServer = async () => {
     //     schema
     // }));
 
-    // app.listen(port, () => {
-    //     console.log("Express Server running at http://localhost:8000");
-    // });
-    app.listen({ port: 8000 }, () => {
-        console.log('Apollo Server on http://localhost:8000/graphql');
+    app.listen(port, () => {
+        console.log("Express Server running at http://localhost:8000");
     });
 };
 
