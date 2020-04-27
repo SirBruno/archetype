@@ -68,7 +68,7 @@ const startServer = async () => {
         }
     });
 
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, path: '/graphql' });
 
     let port = process.env.PORT;
     if (port == null || port == "") {
@@ -88,9 +88,9 @@ const startServer = async () => {
     // app.listen(port, () => {
     //     console.log("Express Server running at http://localhost:8000");
     // });
-    app.listen({ port: 4000 }, () =>
-        console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-    );
+    app.listen({ port: 8000 }, () => {
+        console.log('Apollo Server on http://localhost:8000/graphql');
+    });
 };
 
 startServer();
