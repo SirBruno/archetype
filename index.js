@@ -13,8 +13,7 @@ const startServer = async () => {
     app.use(cors());
 
     const uri = process.env.URI;
-    mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
-    );
+    await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
 
     const connection = mongoose.connection;
     connection.once('open', () => {
