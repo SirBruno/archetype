@@ -1,89 +1,94 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
 const Book = require('./models/book.model');
 const cors = require('cors');
 const path = require('path');
-const schema = require('./schema');
-const graphqlHTTP = require('express-graphql');
-const { ApolloServer, graphqlExpress, gql } = require('apollo-server-express');
-const bodyParser = require('body-parser');
-app.use(cors());
+const { ApolloServer, gql } = require('apollo-server-express');
 
-const myGraphQLSchema = schema;
+// ********************************************************************
 
-const uri = process.env.URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
-);
+const startServer = async () => {
+    const app = express();
+    app.use(cors());
 
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-});
+    const uri = process.env.URI;
+    mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
+    );
 
-app.get('/add', (req, res) => {
-    const newBook = new Book({
-        title: `${req.query.title}`,
-        author: `${req.query.author}`,
-        description: `${req.query.description}`
+    const connection = mongoose.connection;
+    connection.once('open', () => {
+        console.log("MongoDB database connection established successfully");
     });
-    newBook.save().then(() => res.json('Book added!')).catch(err => {
-        res.status(400).json('Error: ' + err.errmsg);
+
+    app.get('/add', (req, res) => {
+        const newBook = new Book({
+            title: `${req.query.title}`,
+            author: `${req.query.author}`,
+            description: `${req.query.description}`
+        });
+        newBook.save().then(() => res.json('Book added!')).catch(err => {
+            res.status(400).json('Error: ' + err.errmsg);
+        });
     });
-});
 
-// const { ApolloServer, gql } = require('apollo-server');
+    const typeDefs = gql`
+      type Book {
+        id: String
+        title: String
+        author: String
+        description: String
+      }
+    
+      type Query {
+        books: [Book]
+      }
+    `;
 
-const typeDefs = gql`
-  type Book {
-    id: String
-    title: String
-    author: String
-    description: String
-  }
+    const resolvers = {
+        Query: {
+            books: () => Book.find().then(books => (
+                books.map(book => {
+                    return {
+                        id: book.id,
+                        title: book.title,
+                        author: book.author,
+                        description: book.description
+                    }
+                })
+            )),
+        },
+    };
 
-  type Query {
-    books: [Book]
-  }
-`;
+    const server = new ApolloServer({
+        typeDefs, resolvers, playground: {
+            endpoint: `http://localhost:4000/graphql`,
+            settings: {
+                'editor.theme': 'light'
+            }
+        }
+    });
 
-const resolvers = {
-    Query: {
-        books: () => Book.find().then(books => (
-            books.map(book => {
-                return {
-                    id: book.id,
-                    title: book.title,
-                    author: book.author,
-                    description: book.description
-                }
-            })
-        )),
-    },
+    server.applyMiddleware({ app });
+
+    // await mongoose.connect("mongodb://localhost:27017/test3", {
+    //     useNewUrlParser: true
+    // });
+
+    let port = process.env.PORT;
+    if (port == null || port == "") {
+        port = 8000;
+    }
+
+    app.use(express.static('public'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+    });
+
+    app.listen(port, () => {
+        console.log("Express Server running at http://localhost:8000");
+    });
 };
 
-const server = new ApolloServer({ typeDefs, resolvers, playground: {
-    endpoint: `http://localhost:4000/graphql`,
-    settings: {
-      'editor.theme': 'light'
-    }
-  } });
-
-let port = process.env.PORT;
-if (port == null || port == "") {
-  port = 8000;
-}
-
-
-app.use(express.static('public'));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
-
-server.applyMiddleware({ app: app });
-
-app.listen(port, () => {
-    console.log("Express Server running at http://localhost:8000");
-});
+startServer();
