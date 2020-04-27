@@ -63,7 +63,7 @@ const startServer = async () => {
         typeDefs, resolvers, playground: {
             endpoint: `http://localhost:4000/graphql`,
             settings: {
-                'editor.theme': 'light'
+                'editor.theme': 'dark'
             }
         }
     });
@@ -89,7 +89,7 @@ const startServer = async () => {
     //     console.log("Express Server running at http://localhost:8000");
     // });
 
-    server.listen({ port: 8000 }).then(({ url }) => {
+    server.listen({ port: 4000 }).then(({ url }) => {
         console.log(`🚀 Server ready at ${url}`);
       });
 };
