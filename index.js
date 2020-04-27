@@ -70,10 +70,6 @@ const startServer = async () => {
 
     server.applyMiddleware({ app });
 
-    // await mongoose.connect("mongodb://localhost:27017/test3", {
-    //     useNewUrlParser: true
-    // });
-
     let port = process.env.PORT;
     if (port == null || port == "") {
         port = 8000;
@@ -84,6 +80,10 @@ const startServer = async () => {
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
     });
+
+    // app.use('/graphql', graphqlHTTP({
+    //     schema
+    // }));
 
     app.listen(port, () => {
         console.log("Express Server running at http://localhost:8000");
