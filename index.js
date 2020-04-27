@@ -6,8 +6,6 @@ const cors = require('cors');
 const path = require('path');
 const { ApolloServer, gql } = require('apollo-server-express');
 
-// ********************************************************************
-
 const startServer = async () => {
     const app = express();
     app.use(cors());
@@ -70,32 +68,16 @@ const startServer = async () => {
 
     server.applyMiddleware({ app });
 
-    let port = process.env.PORT;
-    if (port == null || port == "") {
-        port = 8000;
-    }
-
     app.use(express.static('public'));
 
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
     });
 
-    // app.use('/graphql', graphqlHTTP({
-    //     schema
-    // }));
-
     app.listen({ port: process.env.PORT || 4000 }, () =>
-        console.log(`🚀 Server ready at http://localhost:${port}`)
+        console.log(`Server ready at http://localhost:${process.env.PORT || 4000}`)
     );
 
-    // app.listen(port, () => {
-    //     console.log("Express Server running at http://localhost:8000");
-    // });
-
-    // server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-    //     console.log(`🚀 Server ready at ${url}`);
-    // });
 };
 
 startServer();

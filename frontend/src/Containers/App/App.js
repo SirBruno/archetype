@@ -12,7 +12,7 @@ class App extends Component {
   }
 
   sendData() {
-    axios.get(`/add`, {
+    axios.get(`${process.env.REACT_APP_URI || null}/add`, {
       params: {
         title: document.getElementById("sendData-title").value,
         author: document.getElementById("sendData-author").value,
