@@ -7,14 +7,14 @@ export default function Books() {
     const [books, setBooks] = useState([]);
     const lastId = books[books.length - 1]?.id;
     const testContext = useContext(EnvContext);
+    const apiUrl = process.env.NODE_ENV === 'production' ? 'https://archetypeofficial.herokuapp.com' : process.env.REACT_APP_URI;
 
     useEffect(() => {
 
         console.log(testContext);
 
         const client = new ApolloClient({
-            uri: `https://archetypeofficial.herokuapp.com/graphql`
-            // uri: `${process.env.REACT_APP_URI}/graphql`
+            uri: apiUrl
         });
 
         client.query({
