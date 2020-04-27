@@ -12,8 +12,7 @@ class App extends Component {
   }
 
   sendData() {
-    console.log('env from react: ' + process.env.PORT);
-    axios.get(`http://localhost:${process.env.PORT}`, {
+    axios.get(`/add`, {
       params: {
         title: document.getElementById("sendData-title").value,
         author: document.getElementById("sendData-author").value,
