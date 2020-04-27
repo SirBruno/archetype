@@ -13,7 +13,7 @@ export default function Books() {
         console.log(testContext);
 
         const client = new ApolloClient({
-            uri: process.env.REACT_APP_URI || '/graphql'
+            uri: 'https://archetypeofficial.herokuapp.com/graphql'
         });
 
         client.query({
