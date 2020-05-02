@@ -7,9 +7,6 @@ export default function Books() {
     const [books, setBooks] = useState([]);
     const lastId = books[books.length - 1]?.id;
     const testContext = useContext(EnvContext);
-    const apiUrl = process.env.NODE_ENV === 'production'
-        ? 'https://archetypeofficial.herokuapp.com'
-        : process.env.REACT_APP_URI;
 
     console.log(testContext);
     console.log(`React Env Dev:${process.env.REACT_APP_URI}`);
