@@ -33,7 +33,7 @@ export default function Books() {
             setBooks(result.data.books);
             console.log(lastId);
         });
-    }, [lastId, apiUrl]);
+    }, [lastId]);
 
     return (
         <div>
