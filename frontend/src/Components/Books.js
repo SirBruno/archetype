@@ -12,8 +12,7 @@ export default function Books() {
         : process.env.REACT_APP_URI;
 
     console.log(testContext);
-    console.log(`React Env:${process.env.REACT_APP_TEXT}`);
-    console.log(`React Env (w/ Link):${process.env.REACT_APP_URI}`);
+    console.log(`React Env Dev:${process.env.REACT_APP_URI}`);
 
     useEffect(() => {
 
