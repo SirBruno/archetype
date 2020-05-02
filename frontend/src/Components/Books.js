@@ -18,7 +18,7 @@ export default function Books() {
 
 
         const client = new ApolloClient({
-            uri: `${apiUrl}/graphql`
+            uri: `${process.env.REACT_APP_URI}/graphql`
         });
 
         client.query({
