@@ -4,46 +4,40 @@ import EnvContext from '../Contexts/EnvContext';
 
 export default function Books() {
 
-    const [books, setBooks] = useState([]);
-    const lastId = books[books.length - 1]?.id;
-    const testContext = useContext(EnvContext);
+	const [books, setBooks] = useState([]);
+	const lastId = books[books.length - 1]?.id;
+	const uri = useContext(EnvContext);
 
-    console.log(testContext);
-    console.log(`React Env Dev:${process.env.REACT_APP_URI}`);
+	useEffect(() => {
 
-    useEffect(() => {
+		const client = new ApolloClient({ uri });
 
-
-        const client = new ApolloClient({
-            uri: `${process.env.REACT_APP_URI}/graphql`
-        });
-
-        client.query({
-            query: gql`
+		client.query({
+			query: gql`
                 {
-                    books {
-                        id
-                        title
-                        author
-                        description
-                    }
+									books {
+										id
+										title
+										author
+										description
+									}
                 }
             `
-        }).then(result => {
-            setBooks(result.data.books);
-            console.log(lastId);
-        });
-    }, [lastId]);
+		}).then(result => {
+			setBooks(result.data.books);
+			console.log(lastId);
+		});
+	}, [lastId, uri]);
 
-    return (
-        <div>
-            {books.map(books =>
-                <div key={books.id}>
-                    <h3>{books.title}</h3>
-                    <p>{books.author}</p>
-                    <i>{books.description}</i>
-                </div>
-            )}
-        </div>
-    )
+	return (
+		<div>
+			{books.map(books =>
+				<div key={books.id}>
+					<h3>{books.title}</h3>
+					<p>{books.author}</p>
+					<i>{books.description}</i>
+				</div>
+			)}
+		</div>
+	)
 }
