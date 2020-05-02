@@ -1,54 +1,51 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from 'react';
+import ApolloClient, { gql } from 'apollo-boost';
 import Books from '../../Components/Books';
 import { EnvProvider } from '../../Contexts/EnvContext';
+const apiUrl = process.env.NODE_ENV === 'production' ? 'https://archetypeofficial.herokuapp.com' : process.env.REACT_APP_URI;
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      res: ''
-    }
-  }
+const App = () => {
+  const client = new ApolloClient({
+    uri: `${apiUrl}/graphql`
+  });
 
-  sendData() {
-    axios.get(`${process.env.REACT_APP_URI || null}/add`, {
-      params: {
+  const sendData = () => {
+    client.mutate({
+      variables: {
         title: document.getElementById("sendData-title").value,
         author: document.getElementById("sendData-author").value,
         description: document.getElementById("sendData-description").value
-      }
-    }).then(res => {
-      console.log("res:" + res);
-      this.setState({ res: res.data });
-      document.getElementById("req-response").innerText = this.state.res;
-    }).catch(err => {
-      this.setState({ res: err });
-      document.getElementById("req-response").innerText = this.state.res;
-      console.log(err);
-    });
+      },
+      mutation: gql`
+        mutation addBook($title: String, $author: String, $description: String){
+          addBook(title: $title, author: $author, description: $description) {
+            title
+            author
+            description
+          }
+        }
+    `,
+    }).then(console.log('Book Added! ;)'));
   }
 
-  render() {
-    return (
-      <div className="App">
-        <div>
-          <input id="sendData-title" placeholder="Title" />
-          <br />
-          <input id="sendData-author" placeholder="Author" />
-          <br />
-          <input id="sendData-description" placeholder="Description" />
-          <br />
-          <button onClick={() => this.sendData()}>Send</button>
-          <br />
-          <p id="req-response">request's response goes here...</p>
-          <EnvProvider value="testing the context">
-            <Books />
-          </EnvProvider>
-        </div>
+  return (
+    <div className="App">
+      <div>
+        <input id="sendData-title" placeholder="Title" />
+        <br />
+        <input id="sendData-author" placeholder="Author" />
+        <br />
+        <input id="sendData-description" placeholder="Description" />
+        <br />
+        <button onClick={() => sendData()}>Send</button>
+        <br />
+        <p id="req-response">request's response goes here...</p>
+        <EnvProvider value="testing the context">
+          <Books />
+        </EnvProvider>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default App;

@@ -7,11 +7,16 @@ export default function Books() {
     const [books, setBooks] = useState([]);
     const lastId = books[books.length - 1]?.id;
     const testContext = useContext(EnvContext);
-    const apiUrl = process.env.NODE_ENV === 'production' ? 'https://archetypeofficial.herokuapp.com' : process.env.REACT_APP_URI;
+    const apiUrl = process.env.NODE_ENV === 'production'
+        ? 'https://archetypeofficial.herokuapp.com'
+        : process.env.REACT_APP_URI;
+
+    console.log(testContext);
+    console.log(`React Env:${process.env.REACT_APP_TEXT}`);
+    console.log(`React Env (w/ Link):${process.env.REACT_APP_URI}`);
 
     useEffect(() => {
 
-        console.log(testContext);
 
         const client = new ApolloClient({
             uri: `${apiUrl}/graphql`
@@ -32,7 +37,7 @@ export default function Books() {
             setBooks(result.data.books);
             console.log(lastId);
         });
-    }, [lastId]);
+    }, [lastId, apiUrl]);
 
     return (
         <div>
