@@ -1,39 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react';
-import ApolloClient, { gql } from 'apollo-boost';
-import EnvContext from '../Contexts/EnvContext';
+import React from 'react';
+import { Button } from '@material-ui/core';
 
-export default function Books() {
-
-	const [books, setBooks] = useState([]);
-	const lastId = books[books.length - 1]?.id;
-	const uri = useContext(EnvContext);
-
-	useEffect(() => {
-
-		const client = new ApolloClient({ uri });
-
-		client.query({
-			query: gql`
-                {
-									books {
-										id
-										title
-										author
-										description
-									}
-                }
-            `
-		}).then(result => {
-			setBooks(result.data.books);
-			console.log(lastId);
-		});
-	}, [lastId, uri]);
+export default function Books(props) {
 
 	return (
 		<div>
-			{books.map(books =>
+			{props.books.map(books =>
 				<div key={books.id}>
-					<h3>{books.title}</h3>
+					<h3 style={{ display: "inline" }}>{books.title}</h3>
+					<Button onClick={() => props.deleteBook(books.id)} style={{
+						background: "#000",
+						color: "#fff",
+						marginLeft: 10
+					}}>X</Button>
 					<p>{books.author}</p>
 					<i>{books.description}</i>
 				</div>

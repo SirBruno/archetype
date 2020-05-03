@@ -1,53 +1,28 @@
-import React from 'react';
-import ApolloClient, { gql } from 'apollo-boost';
-import Books from '../../Components/Books';
-import { EnvProvider } from '../../Contexts/EnvContext';
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import Home from '../Home/Home'
+import Post from '../Post/Post'
 
-const uri = process.env.REACT_APP_URI;
-
-export default function App () {
-  const client = new ApolloClient({ uri });
-
-  const dataTitle = React.createRef();
-  const dataAuthor = React.createRef();
-  const dataDescription = React.createRef();
-
-  const sendData = () => {
-    client.mutate({
-      variables: {
-        title: dataTitle.current.value,
-        author: dataAuthor.current.value,
-        description: dataDescription.current.value
-      },
-      mutation: gql`
-        mutation addBook($title: String, $author: String, $description: String){
-          addBook(title: $title, author: $author, description: $description) {
-            title
-            author
-            description
-          }
-        }
-    `,
-    }).then(console.log('Book Added! ;)'));
-  }
-
+export default function App() {
 
   return (
     <div className="App">
-      <div>
-        <input ref={dataTitle} placeholder="Title" />
-        <br />
-        <input ref={dataAuthor} placeholder="Author" />
-        <br />
-        <input ref={dataDescription} placeholder="Description" />
-        <br />
-        <button onClick={() => sendData()}>Send</button>
-        <br />
-        <p id="req-response">request's response goes here...</p>
-        <EnvProvider value={uri}>
-          <Books />
-        </EnvProvider>
-      </div>
+      <Router>
+        <div>
+          <nav>
+            <Link to="/">Home</Link>
+            <Link to="/post">Post</Link>
+          </nav>
+          <Switch>
+          <Route path="/post">
+            <Post />
+          </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   )
 }
