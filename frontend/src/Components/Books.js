@@ -72,7 +72,7 @@ export default function Books(props) {
 				<p id="req-response">request's response goes here...</p>
 				{books.map(books =>
 					<div key={books.id}>
-						<h3 style={{ display: "inline" }}>{books.title}</h3>
+						<a href={`/post/${books.id}`} style={{ display: "inline", fontWeight: "bold", fontSize: "20px" }}>{books.title}</a>
 						<Button onClick={() => deleteBook(books.id)} style={{
 							background: "#000",
 							color: "#fff",

@@ -40,7 +40,8 @@ const startServer = async () => {
       }
     
       type Query {
-        books: [Book]
+        books: [Book],
+				book(_id: String): Book
       }
 
       type Mutation {
@@ -52,7 +53,8 @@ const startServer = async () => {
 
 	const resolvers = {
 		Query: {
-			books: () => Book.find({})
+			books: () => Book.find({}),
+			book: async (root, {_id}) => await Book.findById(_id)
 		},
 		Mutation: {
 			addBook: async (_, args) => {
