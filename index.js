@@ -54,7 +54,7 @@ const startServer = async () => {
 	const resolvers = {
 		Query: {
 			books: () => Book.find({}),
-			book: async (root, {_id}) => await Book.findById(_id)
+			book: async (root, { _id }) => await Book.findById(_id)
 		},
 		Mutation: {
 			addBook: async (_, args) => {
@@ -87,14 +87,25 @@ const startServer = async () => {
 		}
 	};
 
+	// const server = new ApolloServer({
+	// 	typeDefs, resolvers, playground: {
+	// 		endpoint: `http://localhost:${process.env.PORT || 4000}/graphql`,
+	// 		settings: { 'editor.theme': 'dark' }
+	// 	}
+	// });
+
+	// server.applyMiddleware({ app });
+
 	const server = new ApolloServer({
-		typeDefs, resolvers, playground: {
-			endpoint: `https://archetypeofficial.herokuapp.com/graphql`,
-			settings: { 'editor.theme': 'dark' }
-		}
+		typeDefs,
+		resolvers,
 	});
 
-	server.applyMiddleware({ app });
+	server.applyMiddleware({ app, path: '/graphql' });
+
+	app.listen({ port: 8000 }, () => {
+		console.log('Apollo Server on http://localhost:8000/graphql');
+	});
 
 	app.use(express.static('public'));
 
