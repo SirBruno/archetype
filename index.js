@@ -89,7 +89,7 @@ const startServer = async () => {
 
 	const server = new ApolloServer({
 		typeDefs, resolvers, playground: {
-			endpoint: `http://localhost:${process.env.PORT}/graphql`,
+			endpoint: `https://archetypeofficial.herokuapp.com/graphql`,
 			settings: { 'editor.theme': 'dark' }
 		}
 	});
