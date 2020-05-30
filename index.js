@@ -89,7 +89,7 @@ const startServer = async () => {
 
 	const server = new ApolloServer({
 		typeDefs, resolvers, playground: {
-			endpoint: `http://localhost:4000/graphql`,
+			endpoint: `http://localhost:${process.env.PORT}/graphql`,
 			settings: { 'editor.theme': 'dark' }
 		}
 	});
