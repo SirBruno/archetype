@@ -100,8 +100,6 @@ const startServer = async () => {
 
 	server.applyMiddleware({ app });
 
-	// server.applyMiddleware({ app, path: '/graphql' });
-
 	app.use(express.static('public'));
 
 	app.get('*', (req, res) => {
