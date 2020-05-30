@@ -87,25 +87,20 @@ const startServer = async () => {
 		}
 	};
 
-	// const server = new ApolloServer({
-	// 	typeDefs, resolvers, playground: {
-	// 		endpoint: `http://localhost:${process.env.PORT || 4000}/graphql`,
-	// 		settings: { 'editor.theme': 'dark' }
-	// 	}
-	// });
-
-	// server.applyMiddleware({ app });
-
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
+		playground: {
+			endpoint: `http://localhost:8000/graphql`,
+			settings: { 'editor.theme': 'dark' }
+		},
+		introspection: true,
+		playground: true
 	});
 
-	server.applyMiddleware({ app, path: '/graphql' });
+	server.applyMiddleware({ app });
 
-	app.listen({ port: 8000 }, () => {
-		console.log('Apollo Server on http://localhost:8000/graphql');
-	});
+	// server.applyMiddleware({ app, path: '/graphql' });
 
 	app.use(express.static('public'));
 
