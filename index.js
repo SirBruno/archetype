@@ -4,8 +4,9 @@ require('dotenv').config()
 const Book = require('./models/book.model')
 const cors = require('cors')
 const path = require('path')
-const { ApolloServer, gql } = require('apollo-server-express')
+const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./graphql/typeDefs')
+const resolvers = require('./graphql/resolvers')
 
 const startServer = async () => {
 	const app = express()
@@ -18,52 +19,6 @@ const startServer = async () => {
 	connection.once('open', () => {
 		console.log("MongoDB database connection established successfully")
 	});
-
-	app.get('/delete', (req, res) => {
-		Book.deleteOne({ _id: "5ea7553263b4893d0c626084" }, function (err, result) {
-			if (err) {
-				res.send(err);
-			} else {
-				res.send(result);
-			}
-		});
-	});
-
-	const resolvers = {
-		Query: {
-			books: () => Book.find({}),
-			book: async (root, { _id }) => await Book.findById(_id)
-		},
-		Mutation: {
-			addBook: async (_, args) => {
-				try {
-					let response = await Book.create(args);
-					return response;
-				} catch (e) {
-					return e.message;
-				}
-			},
-			updateBook: async (_, args) => {
-				try {
-					let response = await Book.findOneAndUpdate({ _id: args._id },
-						{
-							$set: {
-								title: args.title,
-								author: args.author,
-								description: args.description,
-							}
-						}, { new: true });
-					return response;
-				} catch (e) { return e.message }
-			},
-			deleteBook: async (_, args) => {
-				try {
-					let response = await Book.findOneAndRemove(args)
-					return response;
-				} catch (e) { return e.message }
-			}
-		}
-	};
 
 	const server = new ApolloServer({
 		typeDefs,
