@@ -1,7 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 require('dotenv').config()
-const Book = require('./models/book.model')
 const cors = require('cors')
 const path = require('path')
 const { ApolloServer } = require('apollo-server-express')
