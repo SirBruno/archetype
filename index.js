@@ -1,27 +1,25 @@
-const express = require('express');
-const mongoose = require('mongoose');
-require('dotenv').config();
-const Book = require('./models/book.model');
-const cors = require('cors');
-const path = require('path');
-const { ApolloServer, gql } = require('apollo-server-express');
+const express = require('express')
+const mongoose = require('mongoose')
+require('dotenv').config()
+const Book = require('./models/book.model')
+const cors = require('cors')
+const path = require('path')
+const { ApolloServer, gql } = require('apollo-server-express')
+const typeDefs = require('./typeDefs')
 
 const startServer = async () => {
-	const app = express();
-	app.use(cors());
+	const app = express()
+	app.use(cors())
 
 	const uri = process.env.URI;
-	await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false });
+	await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
 
-	const connection = mongoose.connection;
+	const connection = mongoose.connection
 	connection.once('open', () => {
-		console.log("MongoDB database connection established successfully");
+		console.log("MongoDB database connection established successfully")
 	});
 
 	app.get('/delete', (req, res) => {
-		// deletedCount will return...
-		// 0 if no deletions ocurred (error, didn't find the id specified, etc.)
-		// 1, if the deletion went successfully
 		Book.deleteOne({ _id: "5ea7553263b4893d0c626084" }, function (err, result) {
 			if (err) {
 				res.send(err);
@@ -30,26 +28,6 @@ const startServer = async () => {
 			}
 		});
 	});
-
-	const typeDefs = gql`
-      type Book {
-        id: String
-        title: String
-        author: String
-        description: String
-      }
-    
-      type Query {
-        books: [Book],
-				book(_id: String): Book
-      }
-
-      type Mutation {
-        addBook(title: String, author: String, description: String): Book,
-        deleteBook(_id: String): Book,
-        updateBook(_id: String, title: String, author: String, description: String): Book
-      }
-    `;
 
 	const resolvers = {
 		Query: {
