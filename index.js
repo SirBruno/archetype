@@ -5,7 +5,7 @@ const Book = require('./models/book.model')
 const cors = require('cors')
 const path = require('path')
 const { ApolloServer, gql } = require('apollo-server-express')
-const typeDefs = require('./typeDefs')
+const typeDefs = require('./graphql/typeDefs')
 
 const startServer = async () => {
 	const app = express()
