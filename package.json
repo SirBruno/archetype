@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -25,7 +23,5 @@
     "nodemon": "^2.0.4",
     "qs-middleware": "^1.0.3"
   },
-  "devDependencies": {
-    "jest": "^26.1.0"
-  }
+  "devDependencies": {}
 }
