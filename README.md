@@ -4,6 +4,5 @@ This is my biggest personal project. It's in a *very early* stage of development
 ***Features***
 - *GraphQL API w/ Apollo Server/Client*
 - *Express server*
-- *UI built w/ React*
 
 The project is currently being hosted on *Heroku*, and is accessible via [this link](https://archetypeofficial.herokuapp.com).
