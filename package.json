@@ -24,7 +24,8 @@
     "jest": "^26.1.0",
     "mongoose": "^5.9.18",
     "nodemon": "^2.0.4",
-    "qs-middleware": "^1.0.3"
+    "qs-middleware": "^1.0.3",
+    "underscore.string": "^3.3.5"
   },
   "devDependencies": {}
 }
