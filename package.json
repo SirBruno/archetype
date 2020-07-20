@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "jest"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -19,6 +21,7 @@
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "fix": "0.0.6",
+    "jest": "^26.1.0",
     "mongoose": "^5.9.18",
     "nodemon": "^2.0.4",
     "qs-middleware": "^1.0.3"
