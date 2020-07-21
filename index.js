@@ -6,6 +6,7 @@ const path = require('path')
 const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
+const axios = require("axios")
 
 const startServer = async () => {
 	const app = express()
@@ -26,8 +27,7 @@ const startServer = async () => {
 			endpoint: `http://localhost:8000/graphql`,
 			settings: { 'editor.theme': 'dark' }
 		},
-		introspection: true,
-		playground: true
+		introspection: true
 	});
 
 	server.applyMiddleware({ app });
