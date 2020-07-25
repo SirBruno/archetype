@@ -8,7 +8,12 @@ const resolvers = {
   Mutation: {
     addPost: async (_, args) => {
       try {
-        let response = await Post.create(args);
+        let response = await Post.create({
+          postTitle: args.postTitle,
+          author: args.author,
+          postBody: args.postBody,
+          postLikes: 0
+        });
         return response;
       } catch (e) {
         return e.message;
@@ -16,13 +21,20 @@ const resolvers = {
     },
     updatePost: async (_, args) => {
       try {
+        // make a call to Post.findById, so i can access the fields inside this block
+        // i'm doing this to prevent a field saving as "null" if not specified in the args
+        // otherwise, non-specified fields would make the existing respective field null
+        let postToUpdate = await Post.findById(args._id, 'postTitle author postBody postLikes').exec()
+        
         let response = await Post.findOneAndUpdate({ _id: args._id },
           {
             $set: {
-              postTitle: args.postTitle,
-              author: args.author,
-              postBody: args.postBody,
-              postLikes: args.postLikes
+              // if the field was specified, update it the with new value
+              // otherwise, keep the old value
+              postTitle: args.postTitle || postToUpdate.postTitle,
+              author: args.author || postToUpdate.author,
+              postBody: args.postBody || postToUpdate.postBody,
+              postLikes: args.postLikes || postToUpdate.postLikes
             }
           }, { new: true });
         return response;
