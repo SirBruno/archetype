@@ -16,9 +16,6 @@ const startServer = async () => {
 	await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
 
 	const connection = mongoose.connection
-	connection.once('open', () => {
-		console.log("MongoDB database connection established successfully")
-	});
 
 	const server = new ApolloServer({
 		typeDefs,
