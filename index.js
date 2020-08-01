@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 require('dotenv').config()
 const cors = require('cors')
-const path = require('path')
 const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
@@ -11,7 +10,7 @@ const expressSession = require('express-session')({
 	secret: 'secret',
 	resave: false,
 	saveUninitialized: false
-});
+})
 
 const startServer = async () => {
 	const app = express()
@@ -51,12 +50,13 @@ const startServer = async () => {
 	app.post('/login', (req, res, next) => {
 		passport.authenticate('local',
 			(err, user, info) => {
+
 				if (err) {
 					return next(err);
 				}
 
 				if (!user) {
-					return res.send('Some sh*t wrong. Check your creds!')
+					return res.send('Incorrect username and password combination!')
 				}
 
 				req.logIn(user, function (err) {
@@ -84,11 +84,6 @@ const startServer = async () => {
 
 	app.use(express.static('public'));
 
-	app.get('/',
-		connectEnsureLogin.ensureLoggedIn(),
-		(req, res) => res.send('You\'re logged in! :)')
-	);
-
 	app.get('/private',
 		connectEnsureLogin.ensureLoggedIn(),
 		(req, res) => {
@@ -101,13 +96,15 @@ const startServer = async () => {
 		(req, res) => res.send({ user: req.user })
 	);
 
+	app.get('/', (req, res) => {
+		res.send('Hello!')
+	})
+
 	app.listen({ port: process.env.PORT || 4000 }, () =>
 		console.log(`Server ready at http://localhost:${process.env.PORT || 4000}`)
 	)
 
 	// UserDetails.register({ username: 'paul', active: false }, 'paul');
-	// UserDetails.register({ username: 'jay', active: false }, 'jay');
-	// UserDetails.register({ username: 'roy', active: false }, 'roy');
 
 };
 
