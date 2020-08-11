@@ -1,23 +1,181 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
+  enum PermissionLevels {
+    STANDARD
+    MOD
+    ADMIN
+  }
+
   type Post {
     id: String
     postTitle: String
     author: String
     postBody: String
     postLikes: Int
+    userId: String
+    categoryId: String
+    postComments: [String]
+    postStatus: String
+    postVisibility: String
+    postImageURL: String
+    postTags: [String]
+  }
+
+  type User {
+    id: String
+    userName: String
+    userPassword: String
+    userEmail: String
+    userExp: Int
+    userLevel: Int
+    userPermission: PermissionLevels
+    userRanking: String
+    userPosts: [String]
+    userComments: [String]
+    userReports: [String]
+  }
+
+  type Report {
+    id: String
+    postId: String
+    commentId: String
+    userId: String
+    reportTitle: String
+    reportBody: String
+  }
+
+  type Comment {
+    id: String
+    userId: String
+    commentBody: String
+    commentLikes: Int
+    commentReplies: [String]
+  }
+
+  type Category {
+    id: String
+    categoryPosts: [String]
+    categoryTitle: String
   }
 
   type Query {
     posts: [Post],
-    post(_id: String): Post
+    post(_id: String): Post,
+    users: [User],
+    user(_id: String): User,
+    reports: [Report],
+    report(_id: String): Report,
+    comments: [Comment],
+    comment(_id: String): Comment,
+    categories: [Category],
+    category(_id: String): Category,
   }
 
   type Mutation {
-    addPost(postTitle: String, author: String, postBody: String, postLikes: Int): Post,
+    # ############### POST ###############
+    addPost(
+      postTitle: String,
+      author: String,
+      postBody: String,
+      postLikes: Int,
+      userId: String,
+      categoryId: String,
+      postComments: [String],
+      postStatus: String,
+      postVisibility: String,
+      postImageURL: String,
+      postTags: [String]
+    ): Post,
     deletePost(_id: String): Post,
-    updatePost(_id: String, postTitle: String, author: String, postBody: String, postLikes: Int): Post
+    updatePost(
+      _id: String,
+      postTitle: String,
+      author: String,
+      postBody: String,
+      postLikes: Int,
+      userId: String,
+      categoryId: String,
+      postComments: [String],
+      postStatus: String,
+      postVisibility: String,
+      postImageURL: String,
+      postTags: [String]
+    ): Post,
+
+    # ############### USER ###############
+    addUser(
+      userName: String
+      userPassword: String
+      userEmail: String
+      userExp: Int
+      userLevel: Int
+      userPermission: PermissionLevels
+      userRanking: String
+      userPosts: [String]
+      userComments: [String]
+      userReports: [String]
+    ): User,
+    deleteUser(_id: String): User,
+    updateUser(
+      _id: String
+      userName: String
+      userPassword: String
+      userEmail: String
+      userExp: Int
+      userLevel: Int
+      userPermission: PermissionLevels
+      userRanking: String
+      userPosts: [String]
+      userComments: [String]
+      userReports: [String]
+    ): User
+
+    # ############### REPORT ###############
+    addReport(
+      postId: String
+      commentId: String
+      userId: String
+      reportTitle: String
+      reportBody: String
+    ): Report,
+    deleteReport(_id: String): Report,
+    updateReport(
+      _id: String
+      postId: String
+      commentId: String
+      userId: String
+      reportTitle: String
+      reportBody: String
+    ): Report
+
+    # ############### COMMENT ###############
+    addComment(
+      userId: String
+      commentBody: String
+      commentLikes: Int
+      commentReplies: [String]
+    ): Comment,
+    deleteComment(_id: String): Comment,
+    updateComment(
+      _id: String
+      userId: String
+      commentBody: String
+      commentLikes: Int
+      commentReplies: [String]
+    ): Comment
+
+    # ############### CATEGORY ###############
+    addCategory(
+      categoryPosts: [String]
+      categoryTitle: String
+    ): Category,
+    deleteCategory(_id: String): Category,
+    updateCategory(
+      _id: String
+      categoryPosts: [String]
+      categoryTitle: String
+    ): Category
   }
 `
 
