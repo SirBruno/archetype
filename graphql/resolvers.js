@@ -5,28 +5,12 @@ const resolvers = {
   Query: {
     posts: () => Schemas.Post.find({}),
     post: async (root, { _id }) => await Schemas.Post.findById(_id),
-  },
-  
-  // ############################# USER #############################
-  Query: {
     users: () => Schemas.User.find({}),
-    user: async (root, { _id }) => await Schemas.User.findById(_id)
-  },
-
-  // ############################# REPORT #############################
-  Query: {
+    user: async (root, { _id }) => await Schemas.User.findById(_id),
     reports: () => Schemas.Report.find({}),
-    report: async (root, { _id }) => await Schemas.Report.findById(_id)
-  },
-
-  // ############################# COMMENT #############################
-  Query: {
+    report: async (root, { _id }) => await Schemas.Report.findById(_id),
     comments: () => Schemas.Comment.find({}),
-    comment: async (root, { _id }) => await Schemas.Comment.findById(_id)
-  },
-
-  // ############################# CATEGORY #############################
-  Query: {
+    comment: async (root, { _id }) => await Schemas.Comment.findById(_id),
     categories: () => Schemas.Category.find({}),
     category: async (root, { _id }) => await Schemas.Category.findById(_id)
   },
@@ -122,9 +106,8 @@ const resolvers = {
           userComments: args.userPosts,
           userReports: args.userReports,
         })
-        console.log(response)
         return response
-      } catch (e) { console.log(e.message); return e.message }
+      } catch (e) { return e.message }
     },
     updateUser: async (_, args) => {
       try {
@@ -182,9 +165,8 @@ const resolvers = {
           reportTitle: args.reportTitle,
           reportBody: args.reportBody
         })
-        console.log(response)
         return response
-      } catch (e) { console.log(e.message); return e.message }
+      } catch (e) { return e.message }
     },
     updateReport: async (_, args) => {
       try {
@@ -276,9 +258,8 @@ const resolvers = {
           categoryPosts: args.categoryPosts,
           categoryTitle: args.categoryTitle
         })
-        console.log(response)
         return response
-      } catch (e) { console.log(e.message); return e.message }
+      } catch (e) { return e.message }
     },
     updateCategory: async (_, args) => {
       try {
