@@ -187,7 +187,7 @@ const commentSchema = new Schema({
     },
     commentLikes: {
         type: Number,
-        required: false,
+        required: true,
         unique: false,
         trim: true
     },
@@ -200,7 +200,7 @@ const commentSchema = new Schema({
     userId: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
         trim: true
     }
 }, {
