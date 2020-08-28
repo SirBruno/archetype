@@ -20,6 +20,7 @@ const typeDefs = gql`
     postVisibility: String
     postImageURL: String
     postTags: [String]
+    cursor: String
   }
 
   type User {
@@ -60,7 +61,13 @@ const typeDefs = gql`
   }
 
   type Query {
-    posts: [Post],
+
+    posts(
+      pageSize: Int
+      after: String
+    ): FindPosts!
+
+    # posts: [Post],
     post(_id: String): Post,
     users: [User],
     user(_id: String): User,
@@ -70,6 +77,12 @@ const typeDefs = gql`
     comment(_id: String): Comment,
     categories: [Category],
     category(_id: String): Category,
+  }
+
+  type FindPosts { # add this below the Query type as an additional type.
+    cursor: String!
+    hasMore: Boolean!
+    posts: [Post]
   }
 
   type Mutation {

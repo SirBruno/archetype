@@ -70,7 +70,11 @@ const postSchema = new Schema({
     postLikes: {
         type: Number,
         required: true
-    }
+    },
+    cursor: {
+        type: String,
+        required: false,
+    },
 }, {
     timestamps: true,
     collection: "posts"
