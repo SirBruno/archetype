@@ -97,7 +97,7 @@ const startServer = async () => {
 	);
 
 	app.get('/', (req, res) => {
-		res.send('Hello!')
+		res.send('Helloooooo!')
 	})
 
 	app.listen({ port: process.env.PORT || 4000 }, () =>
