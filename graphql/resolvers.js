@@ -1,9 +1,34 @@
+const { paginateResults } = require('./utils');
 const Schemas = require('../models/Schemas')
 
 const resolvers = {
   // ############################# POST #############################
   Query: {
-    posts: () => Schemas.Post.find({}),
+
+    posts: async (_, { pageSize = 3, after }, { dataSources }) => {
+      const allPosts = await Schemas.Post.find({});
+      // we want these in reverse chronological order
+      allPosts.reverse();
+
+      const posts = paginateResults({
+        after,
+        pageSize,
+        results: allPosts
+      });
+
+      return {
+        posts,
+        cursor: posts.length ? posts.length - 1 : null,
+        // if the cursor at the end of the paginated results is the same as the
+        // last item in _all_ results, then there are no more results after this
+        hasMore: posts.length
+          ? posts.length - 1 !==
+            allPosts.length - 1
+          : false,
+      };
+    },
+
+    // posts: () => Schemas.Post.find({}),
     post: async (root, { _id }) => await Schemas.Post.findById(_id),
     users: () => Schemas.User.find({}),
     user: async (root, { _id }) => await Schemas.User.findById(_id),
@@ -16,10 +41,6 @@ const resolvers = {
   },
 
   Mutation: {
-    // ################################################################
-    // ############################# POST #############################
-    // ################################################################
-
     addPost: async (_, args) => {
       try {
         let response = await Schemas.Post.create({
@@ -35,8 +56,9 @@ const resolvers = {
           postImageURL: args.postImageURL,
           postTags: args.postTags
         })
-        return response
-      } catch (e) { return e.message }
+        console.log(response);
+        return response;
+      } catch (e) {  console.log(e.message); return e.message }
     },
     updatePost: async (_, args) => {
       try {
@@ -84,14 +106,7 @@ const resolvers = {
         let response = await Schemas.Post.findOneAndRemove(args)
         return response
       } catch (e) { return e.message }
-    }
-  },
-
-  Mutation: {
-    // ################################################################
-    // ############################# USER #############################
-    // ################################################################
-
+    },
     addUser: async (_, args) => {
       try {
         let response = await Schemas.User.create({
@@ -148,14 +163,7 @@ const resolvers = {
         let response = await Schemas.User.findOneAndRemove(args)
         return response
       } catch (e) { return e.message }
-    }
-  },
-
-  Mutation: {
-    // ##################################################################
-    // ############################# REPORT #############################
-    // ##################################################################
-
+    },
     addReport: async (_, args) => {
       try {
         let response = await Schemas.Report.create({
@@ -198,14 +206,7 @@ const resolvers = {
         let response = await Schemas.Report.findOneAndRemove(args)
         return response
       } catch (e) { return e.message }
-    }
-  },
-
-  Mutation: {
-    // ###################################################################
-    // ############################# COMMENT #############################
-    // ###################################################################
-
+    },
     addComment: async (_, args) => {
       try {
         let response = await Schemas.Comment.create({
@@ -244,14 +245,7 @@ const resolvers = {
         let response = await Schemas.Comment.findOneAndRemove(args)
         return response
       } catch (e) { return e.message }
-    }
-  },
-
-  Mutation: {
-    // ####################################################################
-    // ############################# CATEGORY #############################
-    // ####################################################################
-
+    },
     addCategory: async (_, args) => {
       try {
         let response = await Schemas.Category.create({
@@ -285,7 +279,7 @@ const resolvers = {
         return response
       } catch (e) { return e.message }
     }
-  }
+  },
 }
 
 module.exports = resolvers
