@@ -72,6 +72,9 @@ const typeDefs = gql`
     users: [User],
     user(_id: String): User,
     reports: [Report],
+    # Campo do report pra ver se a denúncia já foi resolvida ou não
+    # Boolean
+
     report(_id: String): Report,
     comments: [Comment],
     comment(_id: String): Comment,
