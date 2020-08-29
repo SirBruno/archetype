@@ -105,7 +105,7 @@ const startServer = async () => {
 	)
 
 	// UserDetails.register({ username: 'paul', active: false }, 'paul');
-	// Teste 2
+	// Teste dois
 
 };
 
