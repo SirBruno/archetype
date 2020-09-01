@@ -44,6 +44,7 @@ const typeDefs = gql`
     userId: String
     reportTitle: String
     reportBody: String
+    solved: Boolean
   }
 
   type Comment {
@@ -154,6 +155,7 @@ const typeDefs = gql`
       userId: String
       reportTitle: String
       reportBody: String
+      solved: Boolean
     ): Report,
     deleteReport(_id: String): Report,
     updateReport(
@@ -163,6 +165,7 @@ const typeDefs = gql`
       userId: String
       reportTitle: String
       reportBody: String
+      solved: Boolean
     ): Report
 
     # ############### COMMENT ###############

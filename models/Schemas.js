@@ -176,6 +176,11 @@ const reportSchema = new Schema({
         required: false,
         unique: false,
         trim: true
+    },
+    solved: {
+        type: Boolean,
+        required: false,
+        unique: false
     }
 }, {
     timestamps: true,
