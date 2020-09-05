@@ -171,7 +171,8 @@ const resolvers = {
           commentId: args.commentId,
           userId: args.userId,
           reportTitle: args.reportTitle,
-          reportBody: args.reportBody
+          reportBody: args.reportBody,
+          solved: false
         })
         return response
       } catch (e) { return e.message }
@@ -185,6 +186,7 @@ const resolvers = {
           userId
           reportTitle
           reportBody
+          solved
           `
         ).exec()
 
@@ -195,7 +197,8 @@ const resolvers = {
               commentId: args.commentId == null ? reportToUpdate.commentId : args.commentId,
               userId: args.userId == null ? reportToUpdate.userId : args.userId,
               reportTitle: args.reportTitle == null ? reportToUpdate.reportTitle : args.reportTitle,
-              reportBody: args.reportBody == null ? reportToUpdate.reportBody : args.reportBody
+              reportBody: args.reportBody == null ? reportToUpdate.reportBody : args.reportBody,
+              solved: args.solved == null ? reportToUpdate.solved : args.solved
             }
           }, { new: true })
         return response
