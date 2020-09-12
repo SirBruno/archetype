@@ -75,6 +75,18 @@ const postSchema = new Schema({
         type: String,
         required: false,
     },
+    likedBy: {
+        type: [String],
+        required: false,
+    },
+    updatedAt: {
+        type: Date,
+        required: false,
+    },
+    createdAt: {
+        type: Date,
+        required: false,
+    }
 }, {
     timestamps: true,
     collection: "posts"
@@ -140,6 +152,16 @@ const userSchema = new Schema({
         required: true,
         unique: false,
         trim: true
+    },
+    userImageURL: {
+        type: String,
+        required: false,
+        unique: false
+    },
+    userDescription: {
+        type: String,
+        required: false,
+        unique: false
     }
 }, {
     timestamps: true,
@@ -211,6 +233,9 @@ const commentSchema = new Schema({
         required: true,
         unique: false,
         trim: true
+    },
+    likedBy: {
+        type: [String]
     }
 }, {
     timestamps: true,

@@ -54,7 +54,10 @@ const resolvers = {
           postStatus: args.postStatus,
           postVisibility: args.postVisibility,
           postImageURL: args.postImageURL,
-          postTags: args.postTags
+          postTags: args.postTags,
+          likedBy: args.likedBy,
+          updatedAt: args.updatedAt,
+          createdAt: args.createdAt
         })
         console.log(response);
         return response;
@@ -77,7 +80,11 @@ const resolvers = {
           postStatus
           postVisibility
           postImageURL
-          postTags`
+          postTags
+          likedBy
+          updatedAt
+          createdAt
+          `
         ).exec()
 
         let response = await Schemas.Post.findOneAndUpdate({ _id: args._id },
@@ -95,7 +102,10 @@ const resolvers = {
               postStatus: args.postStatus == null ? postToUpdate.postStatus : args.postStatus,
               postVisibility: args.postVisibility == null ? postToUpdate.postVisibility : args.postVisibility,
               postImageURL: args.postImageURL == null ? postToUpdate.postImageURL : args.postImageURL,
-              postTags: args.postTags == null ? postToUpdate.postTags : args.postTags
+              postTags: args.postTags == null ? postToUpdate.postTags : args.postTags,
+              likedBy: args.likedBy == null ? postToUpdate.likedBy : args.likedBy,
+              updatedAt: args.updatedAt == null ? postToUpdate.updatedAt : args.updatedAt,
+              createdAt: args.createdAt == null ? postToUpdate.createdAt : args.createdAt
             }
           }, { new: true })
         return response
@@ -120,6 +130,8 @@ const resolvers = {
           userPosts: args.userPosts,
           userComments: args.userPosts,
           userReports: args.userReports,
+          userImageURL: args.userImageURL,
+          userDescription: args.userDescription
         })
         return response
       } catch (e) { return e.message }
@@ -137,7 +149,10 @@ const resolvers = {
           userRanking
           userPosts
           userComments
-          userReports`
+          userReports
+          userImageURL
+          userDescription
+          `
         ).exec()
 
         let response = await Schemas.User.findOneAndUpdate({ _id: args._id },
@@ -153,6 +168,8 @@ const resolvers = {
               userPosts: args.userPosts == null ? userToUpdate.userPosts : args.userPosts,
               userComments: args.userComments == null ? userToUpdate.userComments : args.userComments,
               userReports: args.userReports == null ? userToUpdate.userReports : args.userReports,
+              userImageURL: args.userImageURL == null ? userToUpdate.userImageURL : args.userImageURL,
+              userDescription: args.userDescription == null ? userToUpdate.userDescription : args.userDescription
             }
           }, { new: true })
         return response
@@ -216,7 +233,8 @@ const resolvers = {
           userId: args.userId,
           commentBody: args.commentBody,
           commentLikes: 0,
-          commentReplies: args.commentReplies
+          commentReplies: args.commentReplies,
+          likedBy: args.likedBy
         })
         return response
       } catch (e) { return e.message }
@@ -237,7 +255,8 @@ const resolvers = {
               userId: args.userId == null ? commentToUpdate.userId : args.userId,
               commentBody: args.commentBody == null ? commentToUpdate.commentBody : args.commentBody,
               commentLikes: args.commentLikes == null ? commentToUpdate.commentLikes : args.commentLikes,
-              commentReplies: args.commentReplies == null ? commentToUpdate.commentReplies : args.commentReplies
+              commentReplies: args.commentReplies == null ? commentToUpdate.commentReplies : args.commentReplies,
+              likedBy: args.likedBy == null ? commentToUpdate.likedBy : args.likedBy
             }
           }, { new: true })
         return response

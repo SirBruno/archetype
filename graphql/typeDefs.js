@@ -21,6 +21,9 @@ const typeDefs = gql`
     postImageURL: String
     postTags: [String]
     cursor: String
+    likedBy: [String]
+    updatedAt: String
+    createdAt: String
   }
 
   type User {
@@ -35,6 +38,8 @@ const typeDefs = gql`
     userPosts: [String]
     userComments: [String]
     userReports: [String]
+    userImageURL: String
+    userDescription: String
   }
 
   type Report {
@@ -53,6 +58,7 @@ const typeDefs = gql`
     commentBody: String
     commentLikes: Int
     commentReplies: [String]
+    likedBy: [String]
   }
 
   type Category {
@@ -102,7 +108,10 @@ const typeDefs = gql`
       postStatus: String,
       postVisibility: String,
       postImageURL: String,
-      postTags: [String]
+      postTags: [String],
+      likedBy: [String],
+      updatedAt: String,
+      createdAt: String
     ): Post,
     deletePost(_id: String): Post,
     updatePost(
@@ -117,7 +126,10 @@ const typeDefs = gql`
       postStatus: String,
       postVisibility: String,
       postImageURL: String,
-      postTags: [String]
+      postTags: [String],
+      likedBy: [String],
+      updatedAt: String,
+      createdAt: String
     ): Post,
 
     # ############### USER ###############
@@ -132,6 +144,8 @@ const typeDefs = gql`
       userPosts: [String]
       userComments: [String]
       userReports: [String]
+      userImageURL: String
+      userDescription: String
     ): User,
     deleteUser(_id: String): User,
     updateUser(
@@ -146,6 +160,8 @@ const typeDefs = gql`
       userPosts: [String]
       userComments: [String]
       userReports: [String]
+      userImageURL: String
+      userDescription: String
     ): User
 
     # ############### REPORT ###############
@@ -174,6 +190,7 @@ const typeDefs = gql`
       commentBody: String
       commentLikes: Int
       commentReplies: [String]
+      likedBy: [String]
     ): Comment,
     deleteComment(_id: String): Comment,
     updateComment(
@@ -182,6 +199,7 @@ const typeDefs = gql`
       commentBody: String
       commentLikes: Int
       commentReplies: [String]
+      likedBy: [String]
     ): Comment
 
     # ############### CATEGORY ###############
