@@ -80,11 +80,11 @@ const postSchema = new Schema({
         required: false,
     },
     updatedAt: {
-        type: Date,
+        type: String,
         required: false,
     },
     createdAt: {
-        type: Date,
+        type: String,
         required: false,
     }
 }, {
@@ -252,7 +252,7 @@ const categorySchema = new Schema({
     categoryPosts: {
         type: [String],
         required: false,
-        unique: true,
+        unique: false,
         trim: true
     }
 }, {
