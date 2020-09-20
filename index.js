@@ -8,19 +8,36 @@ const resolvers = require('./graphql/resolvers')
 const bodyParser = require('body-parser');
 const expressSession = require('express-session')({
 	secret: 'secret',
-	resave: false,
-	saveUninitialized: false
+	resave: true,
+  rolling: true,
+	saveUninitialized: false,
+	cookie: { maxAge: 720000 }
 })
 
 const startServer = async () => {
 	const app = express()
-	app.use(cors())
+	var whitelist = ['http://localhost:3000', 'https://archetype-fe.vercel.app']
+	const corsOptions = {
+		credentials: true,
+		origin: function (origin, callback) {
+			if (whitelist.indexOf(origin) !== -1) {
+				callback(null, true)
+			} else {
+				callback(new Error('Not allowed by CORS'))
+			}
+		}
+	}
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(expressSession);
 	const passport = require('passport');
 	app.use(passport.initialize());
 	app.use(passport.session());
+	app.use(cors({credentials: true}))
+	app.use(function(req, res, next) {
+		res.header('Access-Control-Allow-Origin', req.header('origin') );
+		next();
+	});
 	const passportLocalMongoose = require('passport-local-mongoose');
 
 	const Schema = mongoose.Schema;
@@ -30,12 +47,12 @@ const startServer = async () => {
 	});
 
 	const uri = process.env.URI;
+
 	await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
 
-	const connection = mongoose.connection
-	connection.once('open', () => {
+	if (mongoose.connection.readyState) {
 		console.log("MongoDB database connection established successfully")
-	});
+	}
 
 	UserDetail.plugin(passportLocalMongoose);
 	const UserDetails = mongoose.model('userInfo', UserDetail, 'userInfo');
@@ -47,7 +64,7 @@ const startServer = async () => {
 
 	const connectEnsureLogin = require('connect-ensure-login');
 
-	app.post('/login', (req, res, next) => {
+	app.get('/login', (req, res, next) => {
 		passport.authenticate('local',
 			(err, user, info) => {
 
@@ -63,7 +80,8 @@ const startServer = async () => {
 					if (err) {
 						return next(err);
 					}
-
+					// console.log(req.session);
+					// res.send(req.session);
 					return res.redirect('/');
 				});
 
@@ -93,18 +111,33 @@ const startServer = async () => {
 
 	app.get('/user',
 		connectEnsureLogin.ensureLoggedIn(),
-		(req, res) => res.send({ user: req.user })
+		(req, res) => {
+			res.send({ user: req.user })
+		}
 	);
 
 	app.get('/', (req, res) => {
 		res.send('Helloooooo!')
 	})
 
+	// app.get('/', function(req, res, next) {
+	// 	if (req.session.views) {
+	// 		req.session.views++
+	// 		res.setHeader('Content-Type', 'text/html')
+	// 		res.write('<p>views: ' + req.session.views + '</p>')
+	// 		res.write('<p>expires in: ' + (req.session.cookie.maxAge / 1000) + 's</p>')
+	// 		res.end()
+	// 	} else {
+	// 		req.session.views = 1
+	// 		res.end('welcome to the session demo. refresh!')
+	// 	}
+	// })
+
 	app.listen({ port: process.env.PORT || 4000 }, () =>
 		console.log(`Server ready at http://localhost:${process.env.PORT || 4000}`)
 	)
 
-	// UserDetails.register({ username: 'paul', active: false }, 'paul');
+	// UserDetails.register({ username: 'bruno', active: false }, '44444444');
 	// Teste PR
 
 };
