@@ -120,9 +120,8 @@ const resolvers = {
     addUser: async (_, args) => {
       try {
         let response = await Schemas.User.create({
-          userName: args.userName,
-          userPassword: args.userPassword,
-          userEmail: args.userEmail,
+          username: args.username,
+          nickname: args.nickname,
           userExp: 0,
           userLevel: 0,
           userPermission: args.userPermission,
@@ -140,9 +139,8 @@ const resolvers = {
       try {
         let userToUpdate = await Schemas.User.findById(
           args._id,
-          `userName
-          userPassword
-          userEmail
+          `username
+          nickname
           userExp
           userLevel
           userPermission
@@ -158,9 +156,8 @@ const resolvers = {
         let response = await Schemas.User.findOneAndUpdate({ _id: args._id },
           {
             $set: {
-              userName: args.userName == null ? userToUpdate.userName : args.userName,
-              userPassword: args.userPassword == null ? userToUpdate.userPassword : args.userPassword,
-              userEmail: args.userEmail == null ? userToUpdate.userEmail : args.userEmail,
+              username: args.username == null ? userToUpdate.username : args.username,
+              nickname: args.nickname == null ? userToUpdate.nickname : args.nickname,
               userExp: args.userExp == null ? userToUpdate.userExp : args.userExp,
               userLevel: args.userLevel == null ? userToUpdate.userLevel : args.userLevel,
               userPermission: args.userPermission == null ? userToUpdate.userPermission : args.userPermission,
