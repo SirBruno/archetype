@@ -28,9 +28,8 @@ const typeDefs = gql`
 
   type User {
     id: String
-    userName: String
-    userPassword: String
-    userEmail: String
+    username: String
+    nickname: String
     userExp: Int
     userLevel: Int
     userPermission: PermissionLevels
@@ -134,9 +133,8 @@ const typeDefs = gql`
 
     # ############### USER ###############
     addUser(
-      userName: String
-      userPassword: String
-      userEmail: String
+      username: String
+      nickname: String
       userExp: Int
       userLevel: Int
       userPermission: PermissionLevels
@@ -150,9 +148,8 @@ const typeDefs = gql`
     deleteUser(_id: String): User,
     updateUser(
       _id: String
-      userName: String
-      userPassword: String
-      userEmail: String
+      username: String
+      nickname: String
       userExp: Int
       userLevel: Int
       userPermission: PermissionLevels

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const postSchema = new Schema({
     postTags: {
@@ -93,6 +94,14 @@ const postSchema = new Schema({
 });
 
 const userSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+    },
+    nickname: {
+        type: String,
+        required: true,
+    },
     userReports: {
         type: [String],
         required: false,
@@ -131,24 +140,6 @@ const userSchema = new Schema({
     },
     userExp: {
         type: Number,
-        required: true,
-        unique: false,
-        trim: true
-    },
-    userEmail: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    userName: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    userPassword: {
-        type: String,
         required: true,
         unique: false,
         trim: true
@@ -260,8 +251,10 @@ const categorySchema = new Schema({
     collection: "categories"
 });
 
+userSchema.plugin(passportLocalMongoose);
+
 let Post = mongoose.models.Post || mongoose.model('Post', postSchema);
-let User = mongoose.models.User || mongoose.model('User', userSchema);
+let User = mongoose.models.User || mongoose.model('User', userSchema, 'User');
 let Report = mongoose.models.Report || mongoose.model('Report', reportSchema);
 let Comment = mongoose.models.Comment || mongoose.model('Comment', commentSchema);
 let Category = mongoose.models.Category || mongoose.model('Category', categorySchema);

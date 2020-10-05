@@ -9,10 +9,11 @@ const bodyParser = require('body-parser');
 const expressSession = require('express-session')({
 	secret: 'secret',
 	resave: true,
-  rolling: true,
+	rolling: true,
 	saveUninitialized: false,
 	cookie: { maxAge: 720000 }
 })
+const Schemas = require('./models/Schemas')
 
 const startServer = async () => {
 	const app = express()
@@ -40,12 +41,11 @@ const startServer = async () => {
 	});
 	const passportLocalMongoose = require('passport-local-mongoose');
 
-	const Schema = mongoose.Schema;
-	const UserDetail = new Schema({
-		username: String,
-		password: String
-	});
-
+	
+	
+	
+	
+	
 	const uri = process.env.URI;
 
 	await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
@@ -53,9 +53,8 @@ const startServer = async () => {
 	if (mongoose.connection.readyState) {
 		console.log("MongoDB database connection established successfully")
 	}
-
-	UserDetail.plugin(passportLocalMongoose);
-	const UserDetails = mongoose.model('userInfo', UserDetail, 'userInfo');
+	
+	const UserDetails = Schemas.User;
 
 	passport.use(UserDetails.createStrategy());
 
@@ -136,6 +135,18 @@ const startServer = async () => {
 	app.listen({ port: process.env.PORT || 4000 }, () =>
 		console.log(`Server ready at http://localhost:${process.env.PORT || 4000}`)
 	)
+
+	app.post('/register', (req, res) => {
+		UserDetails.register({
+			username: req.body.username,
+			userExp: 0,
+			userLevel: 0,
+			userPermission: 'STANDARD',
+			userRanking: 'beginner',
+			nickname: req.body.nickname,
+			active: false
+		}, req.body.password).then(response => res.send(response)).catch(e => res.send(e));
+	})
 
 	// UserDetails.register({ username: 'bruno', active: false }, '44444444');
 	// Teste PR
