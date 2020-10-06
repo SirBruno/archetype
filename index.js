@@ -40,6 +40,7 @@ const startServer = async () => {
 		next();
 	});
 	const passportLocalMongoose = require('passport-local-mongoose');
+	var bcrypt = require('bcryptjs');
 
 	
 	
@@ -144,8 +145,32 @@ const startServer = async () => {
 			userPermission: 'STANDARD',
 			userRanking: 'beginner',
 			nickname: req.body.nickname,
+			resetToken: bcrypt.hashSync(`${req.body.username}${req.body.nickname}${req.body.password}`, 8),
 			active: false
 		}, req.body.password).then(response => res.send(response)).catch(e => res.send(e));
+	})
+
+	app.post('/reset', async (req, res) => {
+		let user = await UserDetails.findByUsername(req.body.username)
+		let auth = await user.authenticate(req.body.password)
+
+		if (!auth.error && true) {
+			UserDetails.findByUsername(req.body.username).then(function(sanitizedUser) {
+				if (sanitizedUser) {
+						sanitizedUser.setPassword(req.body.newPassword, function(){
+								sanitizedUser.save();
+								res.status(200).json({message: 'password reset successful'});
+						});
+				} else {
+					res.status(500).json({message: 'This user does not exist'});
+				}
+			}, function(err) {
+					console.error(err);
+			})
+		} else {
+			res.status(500);
+			res.send(auth);
+		}
 	})
 
 	// UserDetails.register({ username: 'bruno', active: false }, '44444444');
