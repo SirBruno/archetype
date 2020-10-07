@@ -94,6 +94,10 @@ const postSchema = new Schema({
 });
 
 const userSchema = new Schema({
+    resetToken: {
+        type: String,
+        required: true,
+    },
     username: {
         type: String,
         required: true,

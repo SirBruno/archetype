@@ -28,6 +28,7 @@ const typeDefs = gql`
 
   type User {
     id: String
+    resetToken: String
     username: String
     nickname: String
     userExp: Int
