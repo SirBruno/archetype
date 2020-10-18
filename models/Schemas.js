@@ -208,7 +208,7 @@ const commentSchema = new Schema({
     commentReplies: {
         type: [String],
         required: false,
-        unique: true,
+        unique: false,
         trim: true
     },
     commentLikes: {
