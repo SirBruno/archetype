@@ -11,7 +11,7 @@ const expressSession = require('express-session')({
 	resave: true,
 	rolling: true,
 	saveUninitialized: false,
-	cookie: { maxAge: 720000 }
+	cookie: { maxAge: 720000, sameSite: 'strict', secure: true }
 })
 const Schemas = require('./models/Schemas')
 
@@ -44,7 +44,7 @@ const startServer = async () => {
 
 	
 	
-	
+	app.set('trust proxy', 1);
 	
 	
 	const uri = process.env.URI;
