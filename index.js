@@ -11,7 +11,7 @@ const expressSession = require('express-session')({
 	resave: true,
 	rolling: true,
 	saveUninitialized: false,
-	cookie: { maxAge: 720000, sameSite: 'strict', secure: true }
+	cookie: { maxAge: 720000, sameSite: 'none' }
 })
 const Schemas = require('./models/Schemas')
 
