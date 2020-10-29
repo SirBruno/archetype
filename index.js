@@ -150,6 +150,11 @@ const startServer = async () => {
 		}, req.body.password).then(response => res.send(response)).catch(e => res.send(e));
 	})
 
+	app.get('/logout', function(req, res){
+		req.logout();
+		res.redirect('/');
+	});
+
 	app.post('/reset', async (req, res) => {
 		let user = await UserDetails.findByUsername(req.body.username)
 		let auth = await user.authenticate(req.body.password)
