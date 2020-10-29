@@ -6,13 +6,31 @@ const { ApolloServer } = require('apollo-server-express')
 const typeDefs = require('./graphql/typeDefs')
 const resolvers = require('./graphql/resolvers')
 const bodyParser = require('body-parser');
-const expressSession = require('express-session')({
-	secret: 'secret',
-	resave: true,
-	rolling: true,
-	saveUninitialized: false,
-	cookie: { maxAge: 720000, sameSite: 'none', secure: true }
-})
+const expressSession = require('express-session')(
+	process.env.ENVIRONMENT === 'DEV' ?
+		{
+			secret: 'secret',
+			resave: true,
+			rolling: true,
+			saveUninitialized: false,
+			cookie: {
+				maxAge: 720000
+			}
+		}
+		:
+		{
+			secret: 'secret',
+			resave: true,
+			rolling: true,
+			saveUninitialized: false,
+			cookie: {
+				maxAge: 720000,
+				sameSite: 'none',
+				secure: true
+			}
+		}
+)
+
 const Schemas = require('./models/Schemas')
 
 const startServer = async () => {
@@ -34,19 +52,19 @@ const startServer = async () => {
 	const passport = require('passport');
 	app.use(passport.initialize());
 	app.use(passport.session());
-	app.use(cors({credentials: true}))
-	app.use(function(req, res, next) {
-		res.header('Access-Control-Allow-Origin', req.header('origin') );
+	app.use(cors({ credentials: true }))
+	app.use(function (req, res, next) {
+		res.header('Access-Control-Allow-Origin', req.header('origin'));
 		next();
 	});
 	const passportLocalMongoose = require('passport-local-mongoose');
 	var bcrypt = require('bcryptjs');
 
-	
-	
+
+
 	app.set('trust proxy', 1);
-	
-	
+
+
 	const uri = process.env.URI;
 
 	await mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false })
@@ -54,7 +72,7 @@ const startServer = async () => {
 	if (mongoose.connection.readyState) {
 		console.log("MongoDB database connection established successfully")
 	}
-	
+
 	const UserDetails = Schemas.User;
 
 	passport.use(UserDetails.createStrategy());
@@ -150,9 +168,9 @@ const startServer = async () => {
 		}, req.body.password).then(response => res.send(response)).catch(e => res.send(e));
 	})
 
-	app.get('/logout', function(req, res){
+	app.get('/logout', function (req, res) {
 		req.logout();
-		res.redirect('/');
+		res.redirect(req.query.redir || '/');
 	});
 
 	app.post('/reset', async (req, res) => {
@@ -160,17 +178,17 @@ const startServer = async () => {
 		let auth = await user.authenticate(req.body.password)
 
 		if (!auth.error && true) {
-			UserDetails.findByUsername(req.body.username).then(function(sanitizedUser) {
+			UserDetails.findByUsername(req.body.username).then(function (sanitizedUser) {
 				if (sanitizedUser) {
-						sanitizedUser.setPassword(req.body.newPassword, function(){
-								sanitizedUser.save();
-								res.status(200).json({message: 'password reset successful'});
-						});
+					sanitizedUser.setPassword(req.body.newPassword, function () {
+						sanitizedUser.save();
+						res.status(200).json({ message: 'password reset successful' });
+					});
 				} else {
-					res.status(500).json({message: 'This user does not exist'});
+					res.status(500).json({ message: 'This user does not exist' });
 				}
-			}, function(err) {
-					console.error(err);
+			}, function (err) {
+				console.error(err);
 			})
 		} else {
 			res.status(500);
