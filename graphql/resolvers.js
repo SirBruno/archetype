@@ -5,25 +5,42 @@ const resolvers = {
   // ############################# POST #############################
   Query: {
 
-    posts: async (_, { pageSize = 3, after }, { dataSources }) => {
+    posts: async (_, { pageSize = 3, after, category }, { dataSources }) => {
       const allPosts = await Schemas.Post.find({});
       // we want these in reverse chronological order
       allPosts.reverse();
 
-      const posts = paginateResults({
+      let posts = paginateResults({
         after,
         pageSize,
+        category,
         results: allPosts
       });
 
+      // console.log(category)
+      // ###############################################################################
+      // ###############################################################################
+
+      // if (category !== undefined) {
+      //   let postCategory = [category.toUpperCase()]
+      //   let filteredArr = posts.filter(function (item) {
+      //     return postCategory.indexOf(item.categoryId.toUpperCase()) > -1
+      //   })
+
+      //   posts = filteredArr
+      // }
+
+      // ###############################################################################
+      // ###############################################################################
+
       return {
         posts,
-        cursor: posts.length ? posts.length - 1 : null,
+        cursor: posts.length ? posts.length - 1 : 0,
         // if the cursor at the end of the paginated results is the same as the
         // last item in _all_ results, then there are no more results after this
         hasMore: posts.length
           ? posts.length - 1 !==
-            allPosts.length - 1
+          allPosts.length - 1
           : false,
       };
     },
@@ -61,7 +78,7 @@ const resolvers = {
         })
         console.log(response);
         return response;
-      } catch (e) {  console.log(e.message); return e.message }
+      } catch (e) { console.log(e.message); return e.message }
     },
     updatePost: async (_, args) => {
       try {
