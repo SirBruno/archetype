@@ -72,6 +72,7 @@ const typeDefs = gql`
     posts(
       pageSize: Int
       after: String
+      category: String
     ): FindPosts!
 
     # posts: [Post],
