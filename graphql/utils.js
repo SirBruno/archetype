@@ -32,7 +32,7 @@ module.exports = {
     });
 
     cursorIndex = parseInt(cursor);
-    console.log(results.length)
+    // console.log(results.length)
 
     return cursorIndex >= 0
       ? results.slice(
