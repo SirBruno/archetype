@@ -163,6 +163,8 @@ const startServer = async () => {
 			userPermission: 'STANDARD',
 			userRanking: 'beginner',
 			nickname: req.body.nickname,
+			userDescription: req.body.userDescription === undefined ? 'Hello world!' : req.body.userDescription,
+			userImageURL: req.body.userImageURL === undefined ? 'https://i.imgur.com/bNJYDQH.gif' : req.body.userImageURL,
 			resetToken: bcrypt.hashSync(`${req.body.username}${req.body.nickname}${req.body.password}`, 8),
 			active: false
 		}, req.body.password).then(response => res.send(response)).catch(e => res.send(e));
