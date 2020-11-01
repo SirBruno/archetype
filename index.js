@@ -14,7 +14,7 @@ const expressSession = require('express-session')(
 			rolling: true,
 			saveUninitialized: false,
 			cookie: {
-				maxAge: 720000
+				maxAge: 259200000
 			}
 		}
 		:
@@ -24,7 +24,7 @@ const expressSession = require('express-session')(
 			rolling: true,
 			saveUninitialized: false,
 			cookie: {
-				maxAge: 720000,
+				maxAge: 259200000,
 				sameSite: 'none',
 				secure: true
 			}
