@@ -150,17 +150,19 @@ const userSchema = new Schema({
     },
     userImageURL: {
         type: String,
+        required: true,
         required: false,
         unique: false
     },
     userDescription: {
         type: String,
+        required: true,
         required: false,
         unique: false
     }
 }, {
     timestamps: true,
-    collection: "users"
+    collection: "User"
 });
 
 const reportSchema = new Schema({
